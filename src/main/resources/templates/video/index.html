@@ -17,6 +17,7 @@
                     <div class="col-4 text-center">
                         <span th:text="${user1.url}"></span>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -78,10 +79,12 @@
 <!-- REQUIRED SCRIPTS -->
 <script layout:fragment="content_page_script">
     function linkpage(page){
+
         console.log(page);
         var urlPage = window.location.href;
         var utlBase = '';
         var urlParram = '';
+          console.log(1);
         let start = 0;
         for(let i = 0; i < urlPage.length-1; i++){
             if(urlPage.charAt(i) =='?'){
@@ -89,12 +92,14 @@
                 break;
             }
         }
+         console.log(2);
         if(start > 0){
             utlBase = urlPage.substring(0,start);
             urlParram = urlPage.substring(start,urlPage.length);
         }else {
             utlBase = urlPage;
         }
+         console.log(3);
         console.log(page);
         start = 0;
         for(let i = urlPage.length-1; i > 0; i--){
@@ -103,17 +108,19 @@
                 break;
             }
         }
+         console.log(4);
         if(isNaN(utlBase.substring(start+1,utlBase.length))){
             utlBase += '/'+ page;
         }
         else{
             utlBase = utlBase.substring(0, start + 1)+ page;
         }
-        var pageSize = document.getElementById('pageSizeInput').value;
+         console.log(5);
         var urlSearchParams = new URLSearchParams(urlPage);
         // Thay đổi giá trị của tham số pageSize
-        urlSearchParams.set('pageSize', pageSize);
-        urlSearchParams.set('name', `[[${name}]]`);
+        urlSearchParams.set('pageSize', `[[${pageSize}]]`);
+         urlSearchParams.set('id_video_info', `[[${id_video_info}]]`);
+  console.log(6);
         var dem = 0;
         urlParram = '';
         urlSearchParams.forEach(function(value, key) {
@@ -125,12 +132,18 @@
             }
             dem++;
         });
+         console.log(7);
         console.log(urlParram);
         var newUrl = utlBase + urlParram;
+           console.log(7);
         window.location.href = newUrl;
     }
 
-    function deleteIcon(id, page, pageSize,id_video_info) {
+    function deleteIcon(id_video_item, page, pageSize,id_video_info) {
+      console.log("id_video_item" +id_video_item);
+      console.log("page" +page);
+      console.log("id_video_info" +pageSize);
+      console.log("id_video_info" +id_video_info);
         if(page == null || page == "" || page == "null")
             page = 1;
         if(pageSize == null || pageSize == "" || pageSize == "null")
@@ -140,7 +153,7 @@
 
         $("#confirmDel").click(function() {
             $("#popup-delete").modal('hide');
-            window.location.href = `[[${@environment.getProperty('server.servlet.context-path')}]]/video/delete/${page}?id=${id}&pageSize=${pageSize}&id_video_info=${id_video_info}`;
+            window.location.href = `[[${@environment.getProperty('server.servlet.context-path')}]]/video/delete/${page}?id_video_item=${id_video_item}&pageSize=${pageSize}&id_video_info=${id_video_info}`;
         });
 
         $("#closeDel").click(function() {
